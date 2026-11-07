@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depoholg — Site em Produção</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: #ffffff;
+    color: #000000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+  }
+
+  /* Textura de grão sutil — estilo impressão streetwear */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .watermark {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(80px, 22vw, 320px);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    color: #000;
+    opacity: 0.04;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    text-transform: uppercase;
+  }
+
+  .logo {
+    position: absolute;
+    top: 36px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+  }
+  .logo img {
+    height: 80px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    filter: grayscale(100%) contrast(1.1);
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+    max-width: 900px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    border: 1.5px solid #000;
+    padding: 8px 18px;
+    color: #000;
+    margin-bottom: 8px;
+  }
+
+  .headline {
+    font-size: clamp(48px, 11vw, 140px);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 0.85;
+    text-transform: uppercase;
+    color: #000;
+  }
+  .headline .outline {
+    -webkit-text-stroke: 2px #000;
+    color: transparent;
+  }
+
+  .line {
+    width: 60px;
+    height: 2px;
+    background: #000;
+    margin: 6px 0;
+  }
+
+  .sub {
+    font-size: clamp(12px, 1.4vw, 15px);
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #000;
+    opacity: 0.7;
+  }
+
+  /* SECÇÃO DE CONTACTO */
+  .contact {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 3;
+  }
+
+  .contact-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-links a {
+    color: #000;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid #000;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .contact-links a:hover {
+    opacity: 0.55;
+    transform: translateY(-2px);
+  }
+
+  /* Footer */
+  .footer {
+    position: absolute;
+    bottom: 28px; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: #000;
+    z-index: 3;
+  }
+  .footer span { opacity: 0.55; }
+
+  /* Cantos frame */
+  .corner {
+    position: absolute;
+    width: 40px; height: 40px;
+    border: 1.5px solid #000;
+    z-index: 1;
+  }
+  .corner.tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+  .corner.tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+  .corner.bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+  .corner.br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+  @media (max-width: 600px) {
+    .logo img { height: 55px; }
+    .logo { top: 76px; }
+    .footer { padding: 0 20px; font-size: 9px; letter-spacing: 0.3em; }
+    .footer span:nth-child(2) { display: none; }
+    .corner { width: 25px; height: 25px; }
+    .contact-links { gap: 18px; }
+    .contact-links a { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="watermark">DEPOHOLG</div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="logo">
+    <img src="depohologo.jpg" alt="Depoholg Logo">
+  </div>
+
+  <main class="content">
+    <div class="tag">Coming Soon</div>
+    <h1 class="headline">
+      Site em<br>
+      <span class="outline">Produção</span>
+    </h1>
+    <div class="line"></div>
+    <p class="sub">Estamos a preparar algo novo</p>
+
+    <!-- CONTACTOS — substitui os placeholders pelos teus dados reais -->
+    <section class="contact">
+      <span class="contact-label">Contactos</span>
+      <div class="contact-links">
+        <a href="https://instagram.com/depoho" target="_blank" rel="noopener">@depoho</a>
+        <a href="mailto:contato@depoho.com">depoho@outlook.com</a>
+        <a href="https://wa.me/+258848982463" target="_blank" rel="noopener">+258848982463</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© Depoholg</span>
+    <span>Est. 2025</span>
+    <span>Em breve</span>
+  </footer>
+
+</body>
+</html>
